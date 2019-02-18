@@ -18,7 +18,7 @@ class ZabbixGet:
         so = socket.socket()
         so.connect((self.server_ip, self.server_port))
         wobj = so.makefile(u'wb')
-        wobj.write(self.request_key)
+        wobj.write(struct.pack("<4sBq", self.zbx_header, self.zbx_version, len(self.request_key)) + self.request_key)
         wobj.close()
         robj = so.makefile(u'rb')
         recv_data = robj.read()
